@@ -5,5 +5,6 @@ public class Main {
         EntryPoint.main(args);
         
         // La speranza è quella di aver risolto di nuovo!
+        // Commento fra
     }
 }
