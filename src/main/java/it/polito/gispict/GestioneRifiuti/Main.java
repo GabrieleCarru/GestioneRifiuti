@@ -4,6 +4,6 @@ public class Main {
 	public static void main(String[] args) {
         EntryPoint.main(args);
         
-        // Aggiunto commento di prova inutile
+        // La speranza è quella di aver risolto definitivamente!
     }
 }
