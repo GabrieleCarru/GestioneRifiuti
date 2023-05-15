@@ -44,14 +44,13 @@ public class FXMLController {
 
     @FXML
     void annullaSimulazione(ActionEvent event) {
-    	System.out.println("Funziona il pulsante");
+    	System.out.println("Ciao il pulsante");
     }
 
     @FXML
     void avvioSimulazione(ActionEvent event) {
-
     }
-
+    
     @FXML
     void eliminaRisultato(ActionEvent event) {
 
