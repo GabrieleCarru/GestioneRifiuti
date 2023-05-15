@@ -44,6 +44,7 @@ public class FXMLController {
 
     @FXML
     void annullaSimulazione(ActionEvent event) {
+    	System.out.println("Funziona il pulsante");
 
     }
 
