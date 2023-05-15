@@ -4,9 +4,6 @@ public class Main {
 	public static void main(String[] args) {
         EntryPoint.main(args);
         
-        // Riprestino versione precedente; problema con commit (chiede creazione branch)
-        
-        // prova post correzioni
-        
+        // Commit di prova per verificare Warning
     }
 }
