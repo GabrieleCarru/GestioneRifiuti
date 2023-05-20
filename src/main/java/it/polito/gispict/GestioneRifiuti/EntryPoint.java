@@ -1,6 +1,7 @@
 package it.polito.gispict.GestioneRifiuti;
 
 import javafx.application.Application;
+import it.polito.gispict.GestioneRifiuti.model.Model;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,13 +13,15 @@ public class EntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-        
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+    	Parent root = loader.load();
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
-        scene.getRoot().setStyle("-fx-font-family: 'serif'");
-
-        stage.setTitle("JavaFX and Maven");
+         
+        Model model = new Model();
+        FXMLController controller = loader.getController();
+        controller.setModel(model);
+        
+        stage.setTitle("Gestione Rifiuti");
         stage.setScene(scene);
         stage.show();
     }

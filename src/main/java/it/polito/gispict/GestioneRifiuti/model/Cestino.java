@@ -1,10 +1,11 @@
 package it.polito.gispict.GestioneRifiuti.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Cestino {
 	
-	private String idCestino;
+	private Integer idCestino;
 	//	definizione di una classe "Posizione" che comprende longitudine e latitudine
 	//	oltre ai metodi per il calcolo della distanza
 	private Posizione posizione;
@@ -12,18 +13,19 @@ public class Cestino {
 	private Boolean statoFunzionamento;
 	private LocalDate dataSvuotamento;
 	
-	public Cestino(String idCestino, Posizione posizione, Integer punteggio) {
+	public Cestino(Integer idCestino, Posizione posizione, Integer punteggio) {
 		super();
 		this.idCestino = idCestino;
 		this.posizione = posizione;
 		this.punteggio = punteggio;
+		this.statoFunzionamento = true;
 	}
 
-	public String getIdCestino() {
+	public Integer getIdCestino() {
 		return idCestino;
 	}
 
-	public void setIdCestino(String idCestino) {
+	public void setIdCestino(Integer idCestino) {
 		this.idCestino = idCestino;
 	}
 
@@ -63,6 +65,25 @@ public class Cestino {
 	public String toString() {
 		return "Cestino [idCestino=" + idCestino + ", posizione=" + posizione + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(idCestino);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cestino other = (Cestino) obj;
+		return Objects.equals(idCestino, other.idCestino);
+	}
+	
+	
 	
 	
 	
