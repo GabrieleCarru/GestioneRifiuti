@@ -63,7 +63,7 @@ public class Cestino {
 
 	@Override
 	public String toString() {
-		return "Cestino [idCestino=" + idCestino + ", posizione=" + posizione + "]";
+		return "Cestino" + idCestino;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package it.polito.gispict.GestioneRifiuti.model;
 
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.min;
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -12,6 +13,7 @@ public class Model {
 
 	private List<Cestino> cestini;
 	private Graph<Cestino, DefaultWeightedEdge> grafo;
+	private List<Cestino> cestiniNavigati;
 	
 	public List<Cestino> generaCestini(int numCestini) {
 		
@@ -79,9 +81,82 @@ public class Model {
 	public void stampaArchi() {
 		
 		for(DefaultWeightedEdge e : this.grafo.edgeSet()) {
-			System.out.println("Peso: " + this.grafo.getEdgeWeight(e) + "\n");
+			System.out.println("Peso: " + this.grafo.getEdgeWeight(e) + " -> " + this.grafo.getEdgeSource(e) 
+			+ " ; " + this.grafo.getEdgeTarget(e) + "\n");
 		}
 		
 	}
+	
+	public Double camminoGrafoCompleto(List<Cestino> cestini) {
+		
+		double risultato = 0;
+		cestiniNavigati = new ArrayList<>();
+		Cestino daAnalizzare = cestini.get(0);
+		int indice = 1;
+		
+		do {
+			
+			double minimoCammino = 1000000;
+			DefaultWeightedEdge arcoVincente = null;
+			
+			for(DefaultWeightedEdge e : this.grafo.edgesOf(daAnalizzare)) {
+				
+				//System.out.println("Sono qui" + indice + getCamminoMinimoCompleto());
+				
+				if((this.grafo.getEdgeWeight(e) < minimoCammino) 
+						&& (!cestiniNavigati.contains(this.grafo.getEdgeSource(e))) 
+						&& (!cestiniNavigati.contains(this.grafo.getEdgeTarget(e)))) {
+					minimoCammino = this.grafo.getEdgeWeight(e);
+					arcoVincente = e;
+				}
+				
+			}
+			risultato = risultato + minimoCammino;
+			
+			// controllare che Source e Target coprano la casistica di interesse; altrimenti ciclare finché non si ottiene destinazione
+			Cestino possibileDestinazione1 = this.grafo.getEdgeSource(arcoVincente);
+			Cestino possibileDestinazione2 = this.grafo.getEdgeTarget(arcoVincente);
+			
+			indice = indice +1;
+			
+			if(!possibileDestinazione1.equals(daAnalizzare)) {
+				cestiniNavigati.add(daAnalizzare);
+				daAnalizzare = possibileDestinazione1;
+			} else {
+				cestiniNavigati.add(daAnalizzare);
+				daAnalizzare = possibileDestinazione2;
+			}
+			
+			
+			
+		} while (cestiniNavigati.size()<cestini.size()-1);
+		
+		// manca l'ultimo cestino
+		for(Cestino c1 : cestini) {
+			if(!cestiniNavigati.contains(c1)) {
+				cestiniNavigati.add(c1);
+				//risultato = risultato + 
+				//		this.grafo.getEdgeWeight(this.grafo.getEdge(c1, cestiniNavigati.get(cestini.size()-2)));
+			}
+		}
+		
+		return risultato;
+		
+	}
+	
+	public List<Cestino> getCamminoMinimoCompleto() {
+		return cestiniNavigati;
+	}
+	
+	public Double camminoGrafoCestiniPieni() {
+		
+		double risultato = 0;
+		
+		
+		
+		return risultato;
+		
+	}
+	
 	
 }

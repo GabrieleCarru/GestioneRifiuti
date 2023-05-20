@@ -13,7 +13,7 @@ public class TestCestino {
 		
 		modello = new Model();
 		cestini = new ArrayList<>();
-		cestini = modello.generaCestini(3);
+		cestini = modello.generaCestini(4);
 		
 		modello.creaGrafo(cestini);
 		
@@ -26,7 +26,10 @@ public class TestCestino {
 		}
 		
 		modello.stampaArchi();
-			
+		
+		double risultato = modello.camminoGrafoCompleto(cestini);
+		System.out.println("Il tempo impiegato è pari a: " + risultato + "\n");
+		System.out.println(modello.getCamminoMinimoCompleto());
 
 	}
 
