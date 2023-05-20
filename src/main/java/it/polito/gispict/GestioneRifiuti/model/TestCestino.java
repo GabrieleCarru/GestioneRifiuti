@@ -27,9 +27,17 @@ public class TestCestino {
 		
 		modello.stampaArchi();
 		
-		double risultato = modello.camminoGrafoCompleto(cestini);
-		System.out.println("Il tempo impiegato è pari a: " + risultato + "\n");
+		double risultatoNavigazioneCompleta = modello.camminoGrafoCompleto(cestini);
+		System.out.println("Il tempo impiegato per raccolta completa è pari a: " 
+														+ risultatoNavigazioneCompleta + "\n");
 		System.out.println(modello.getCamminoMinimoCompleto());
+		
+		System.out.println("\n\n\n");
+		
+		double risultatoOttimizzato = modello.camminoGrafoCestiniPieni(cestini);
+		System.out.println("Il tempo impiegato per raccolta ottimizzata è pari a: " 
+														+ risultatoOttimizzato + "\n");
+		System.out.println(modello.getCamminoMinimoOttimizzato());
 
 	}
 
