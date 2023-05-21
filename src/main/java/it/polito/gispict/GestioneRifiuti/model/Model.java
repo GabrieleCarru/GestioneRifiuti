@@ -18,6 +18,15 @@ public class Model {
 	private List<Cestino> cestiniPieni;
 	private Integer punteggioMassimo;
 	
+	/**
+	 * Genera una lista di elementi "Cestino" a partire da un valore intero fornito dall'utente. 
+	 * Alla creazione del Cestino, genera randomicamente i valori di latitudine e longitudine 
+	 * (valore massimo stabilito all'interno del metodo, da trasferire come variabile locale per 
+	 * agevolare modifiche future). Inoltre, assegna casualmente un valore da 0 a 100 all'attributo "punteggio", 
+	 * così da determinare in maniera casuale lo stato di riempimento del Cestino.
+	 * @param numCestini : valore fornito dall'utente (nel nostro caso, interfaccia JavaFX)
+	 * @return List<Cestino> : lista di numCestini generati con attribuiti randomici
+	 */
 	public List<Cestino> generaCestini(int numCestini) {
 		
 		listaCestini = new ArrayList<>();
@@ -41,6 +50,9 @@ public class Model {
 		
 	}
 	
+	/**
+	 * @param cestini
+	 */
 	public void creaGrafo(List<Cestino> cestini) {
 		
 		this.grafo = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
@@ -73,6 +85,9 @@ public class Model {
 		
 	}
 	
+	/**
+	 * @return
+	 */
 	public Integer getNumeroArchi() {
 		
 		int numArchi = 0;
@@ -81,6 +96,9 @@ public class Model {
 		
 	}
 
+	/**
+	 * 
+	 */
 	public void stampaArchi() {
 		
 		for(DefaultWeightedEdge e : this.grafo.edgeSet()) {
@@ -90,6 +108,10 @@ public class Model {
 		
 	}
 	
+	/**
+	 * @param cestini
+	 * @return
+	 */
 	public Double camminoGrafoCompleto(List<Cestino> cestini) {
 		
 		double risultato = 0;
@@ -147,10 +169,17 @@ public class Model {
 		
 	}
 	
+	/**
+	 * @return
+	 */
 	public List<Cestino> getCamminoMinimoCompleto() {
 		return cestiniNavigati;
 	}
 	
+	/**
+	 * @param cestini
+	 * @return
+	 */
 	public Double camminoGrafoCestiniPieni(List<Cestino> cestini) {
 		
 		punteggioMassimo = 75;
@@ -229,6 +258,9 @@ public class Model {
 		}
 	}
 	
+	/**
+	 * @return
+	 */
 	public List<Cestino> getCamminoMinimoOttimizzato() {
 		return cestiniNavigatiPieni;
 	}
