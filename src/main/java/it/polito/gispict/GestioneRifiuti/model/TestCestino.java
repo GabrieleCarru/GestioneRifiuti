@@ -13,7 +13,7 @@ public class TestCestino {
 		
 		modello = new Model();
 		cestini = new ArrayList<>();
-		cestini = modello.generaCestini(4);
+		cestini = modello.generaCestini(60);
 		
 		modello.creaGrafo(cestini);
 		
