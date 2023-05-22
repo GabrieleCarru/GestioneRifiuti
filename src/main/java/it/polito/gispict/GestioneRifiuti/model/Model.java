@@ -195,7 +195,9 @@ public class Model {
 			}
 		}
 		
-		return risultato;
+		double scale = Math.pow(10, 2);
+		double risultatoArrotondato = Math.round(risultato*scale)/scale;
+		return risultatoArrotondato;
 		
 	}
 	
@@ -315,9 +317,9 @@ public class Model {
 					//			this.grafo.getEdgeWeight(this.grafo.getEdge(c1, cestiniNavigati.get(cestini.size()-2)));
 				}
 			}
-		
-		
-			return risultato;
+			double scale = Math.pow(10, 2);
+			double risultatoArrotondato = Math.round(risultato*scale)/scale;
+			return risultatoArrotondato;
 		
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println("PIPPO COCA");

@@ -63,7 +63,8 @@ public class Cestino {
 
 	@Override
 	public String toString() {
-		return "Cestino" + idCestino + " ; " + punteggio;
+		return "Cestino " + idCestino + " [(" + posizione.getLatitudine() + ";" + posizione.getLongitudine() + 
+					") ; pieno al " + punteggio + "%]";
 	}
 
 	@Override
