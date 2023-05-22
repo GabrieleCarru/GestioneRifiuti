@@ -13,7 +13,7 @@ public class TestCestino {
 		
 		modello = new Model();
 		cestini = new ArrayList<>();
-		cestini = modello.generaCestini(20);
+		cestini = modello.generaCestini(4);
 		
 		modello.creaGrafo(cestini);
 		
@@ -32,13 +32,13 @@ public class TestCestino {
 														+ risultatoNavigazioneCompleta + "\n");
 		System.out.println(modello.getCamminoMinimoCompleto());
 		
-		System.out.println("\n\n\n");
+		System.out.println("\n\n");
 		
 		double risultatoOttimizzato = modello.camminoGrafoCestiniPieni(cestini);
 		System.out.println("Il tempo impiegato per raccolta ottimizzata è pari a: " 
 														+ risultatoOttimizzato + "\n");
 		System.out.println(modello.getCamminoMinimoOttimizzato());
-
+		
 	}
 
 }

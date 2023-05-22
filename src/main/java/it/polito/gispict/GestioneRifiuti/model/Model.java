@@ -16,7 +16,11 @@ public class Model {
 	private List<Cestino> cestiniNavigati;
 	private List<Cestino> cestiniNavigatiPieni;
 	private List<Cestino> cestiniPieni;
+	
 	private Integer punteggioMassimo;
+	private Posizione posizionePartenza;
+	private Integer latPartenza;
+	private Integer longPartenza;
 	
 	/**
 	 * Genera una lista di elementi "Cestino" a partire da un valore intero fornito dall'utente. 
@@ -30,6 +34,10 @@ public class Model {
 	public List<Cestino> generaCestini(int numCestini) {
 		
 		listaCestini = new ArrayList<>();
+		
+		latPartenza = 10;
+		longPartenza = 10;
+		posizionePartenza = new Posizione(latPartenza, longPartenza); 
 		
 		int i = 0;
 		for(i=0; i<numCestini; i++) {
@@ -116,7 +124,29 @@ public class Model {
 		
 		double risultato = 0;
 		cestiniNavigati = new ArrayList<>();
-		Cestino daAnalizzare = cestini.get(0);
+		double pesoMinimo = 100000;
+		Cestino daAnalizzare = null;
+		
+		// scelgo il cestino da cui partire sulla base della vicinanza alla partenza 
+		for(Cestino c : cestini) {
+		
+			double a = latPartenza - c.getPosizione().getLatitudine();
+			double b = longPartenza - c.getPosizione().getLongitudine(); 
+			
+			double peso = Math.sqrt(
+					Math.pow(a, 2) +
+					Math.pow(b, 2)
+					);
+			
+			if(peso < pesoMinimo) {
+				daAnalizzare = c;
+				pesoMinimo = peso;
+			}
+		}
+		
+		risultato = pesoMinimo;
+		
+		//Cestino daAnalizzare = cestini.get(0);
 		int indice = 1;
 		
 		do {
@@ -185,6 +215,10 @@ public class Model {
 		punteggioMassimo = 75;
 		cestiniNavigatiPieni = new ArrayList<>();
 		cestiniPieni = new ArrayList<>();
+		double pesoMinimo = 100000;
+		Cestino daAnalizzare = null;
+		double risultato;
+		boolean flagArchi = false;
 		
 		for(Cestino c : cestini) {
 			if(c.getPunteggio() >= punteggioMassimo) {
@@ -192,71 +226,104 @@ public class Model {
 			}
 		}
 		
+		
+		
+		for(Cestino c : cestiniPieni) {
+			
+			double a = latPartenza - c.getPosizione().getLatitudine();
+			double b = longPartenza - c.getPosizione().getLongitudine(); 
+			
+			double peso = Math.sqrt(
+					Math.pow(a, 2) +
+					Math.pow(b, 2)
+					);
+			
+			if(peso < pesoMinimo) {
+				daAnalizzare = c;
+				pesoMinimo = peso;
+			}
+		}
+		
+		if(cestiniPieni.isEmpty()) {
+			risultato = 0;
+		} else {
+			risultato = pesoMinimo;
+		}
+		
 		try {
-			Cestino daAnalizzare = cestiniPieni.get(0);
+	
 		
-		double risultato = 0;
-		
-		do {
+			do {
 			
-			double minimoCammino = 1000000;
-			try {
-				DefaultWeightedEdge arcoVincente = null;
+				double minimoCammino = 1000000;
+				try {
+					DefaultWeightedEdge arcoVincente = null;
 			
 			
-				for(DefaultWeightedEdge e : this.grafo.edgesOf(daAnalizzare)) {
+					for(DefaultWeightedEdge e : this.grafo.edgesOf(daAnalizzare)) {
 				
-					//System.out.println("Sono qui" + indice + getCamminoMinimoCompleto());
+						//System.out.println("Sono qui" + indice + getCamminoMinimoCompleto());
 				
-					if((this.grafo.getEdgeWeight(e) < minimoCammino) 
-							&& (!cestiniNavigatiPieni.contains(this.grafo.getEdgeSource(e))) 
-							&& (!cestiniNavigatiPieni.contains(this.grafo.getEdgeTarget(e)))
-							&& (this.grafo.getEdgeSource(e).getPunteggio()>punteggioMassimo)
-							&& (this.grafo.getEdgeTarget(e).getPunteggio()>punteggioMassimo)) {
-						minimoCammino = this.grafo.getEdgeWeight(e);
-						arcoVincente = e;
+						if((this.grafo.getEdgeWeight(e) < minimoCammino) 
+								&& (!cestiniNavigatiPieni.contains(this.grafo.getEdgeSource(e))) 
+								&& (!cestiniNavigatiPieni.contains(this.grafo.getEdgeTarget(e)))
+								&& (this.grafo.getEdgeSource(e).getPunteggio()>punteggioMassimo)
+								&& (this.grafo.getEdgeTarget(e).getPunteggio()>punteggioMassimo)) {
+							minimoCammino = this.grafo.getEdgeWeight(e);
+							arcoVincente = e;
+							flagArchi = true;
+						}
+				
 					}
-				
+					
+					if (flagArchi == true){
+						risultato = risultato + minimoCammino;
+					} 
+			
+					// controllare che Source e Target coprano la casistica di interesse; altrimenti ciclare finché non si ottiene destinazione
+					Cestino possibileDestinazione1 = this.grafo.getEdgeSource(arcoVincente);
+					Cestino possibileDestinazione2 = this.grafo.getEdgeTarget(arcoVincente);
+			
+			
+			
+					if(!possibileDestinazione1.equals(daAnalizzare)) {
+						cestiniNavigatiPieni.add(daAnalizzare);
+						daAnalizzare = possibileDestinazione1;
+					} else {
+						cestiniNavigatiPieni.add(daAnalizzare);
+						daAnalizzare = possibileDestinazione2;
+					}
+			
+				} catch (NullPointerException e) {
+					System.out.println("Il tempo impiegato per la raccolta ottimizzata è pari a: " + risultato + "\n");
+					if(cestiniPieni.isEmpty()) {
+						System.out.println("Non ci sono cestini pieni.");
+					} else {
+						System.out.println(cestiniPieni);
+					}
+						
+					return null;
 				}
-				risultato = risultato + minimoCammino;
 			
-				// controllare che Source e Target coprano la casistica di interesse; altrimenti ciclare finché non si ottiene destinazione
-				Cestino possibileDestinazione1 = this.grafo.getEdgeSource(arcoVincente);
-				Cestino possibileDestinazione2 = this.grafo.getEdgeTarget(arcoVincente);
-			
-			
-			
-				if(!possibileDestinazione1.equals(daAnalizzare)) {
-					cestiniNavigatiPieni.add(daAnalizzare);
-					daAnalizzare = possibileDestinazione1;
-				} else {
-					cestiniNavigatiPieni.add(daAnalizzare);
-					daAnalizzare = possibileDestinazione2;
-				}
-			
-			} catch (NullPointerException e) {
-				System.out.println("Avendo trovato un solo cestino, non posso stabilire la distanza per raggiungerlo");
-			}
-			
-		} while (cestiniNavigatiPieni.size()<cestiniPieni.size()-1);
+			} while (cestiniNavigatiPieni.size()<cestiniPieni.size()-1);
 		
-		// manca l'ultimo cestino
-		for(Cestino c1 : cestiniPieni) {
-			if(!cestiniNavigatiPieni.contains(c1)) {
-				cestiniNavigatiPieni.add(c1);
-				//risultato = risultato + 
-				//		this.grafo.getEdgeWeight(this.grafo.getEdge(c1, cestiniNavigati.get(cestini.size()-2)));
+			// manca l'ultimo cestino
+			for(Cestino c1 : cestiniPieni) {
+				if(!cestiniNavigatiPieni.contains(c1)) {
+					cestiniNavigatiPieni.add(c1);
+					//risultato = risultato + 
+					//			this.grafo.getEdgeWeight(this.grafo.getEdge(c1, cestiniNavigati.get(cestini.size()-2)));
+				}
+			}
+		
+		
+			return risultato;
+		
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("PIPPO COCA");
+				return null;
 			}
 		}
-		
-		
-		return risultato;
-		
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("PIPPO COCA");
-			return null;
-		}
-	}
 	
 	/**
 	 * @return
