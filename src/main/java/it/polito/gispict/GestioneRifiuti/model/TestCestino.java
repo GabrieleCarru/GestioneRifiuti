@@ -13,9 +13,12 @@ public class TestCestino {
 		
 		modello = new Model();
 		cestini = new ArrayList<>();
-		cestini = modello.generaCestini(4);
+		cestini = modello.generaCestini(15);
 		
 		modello.creaGrafo(cestini);
+		
+		System.out.println("SIMULAZIONE 1: \n");
+		System.out.println("SIMULAZIONE 1: \n");
 		
 		int numeroArchi = modello.getNumeroArchi();
 		
