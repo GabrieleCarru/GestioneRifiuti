@@ -10,7 +10,7 @@ public class TestCestino {
 		
 		Model modello;
 		List<Cestino> cestini;
-		Integer numeroCestini = 20;
+		Integer numeroCestini = 30;
 		
 		modello = new Model();
 		cestini = new ArrayList<>();
